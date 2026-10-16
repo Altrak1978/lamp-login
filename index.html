@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lamp Login V3</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #100c0b;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      min-height: 560px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      overflow: hidden;
+      border: 1px solid #49352b;
+      border-radius: 20px;
+      background: #211612;
+      box-shadow: 0 20px 80px #0008;
+    }
+
+    .scene {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 48%,
+        #8b542c 0%, #44291c 40%, #211612 76%);
+    }
+
+    .glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: #ffb65a;
+      opacity: .12;
+      filter: blur(70px);
+      border-radius: 50%;
+      animation: breathe 4s infinite alternate;
+    }
+
+    .lamp {
+      position: relative;
+      z-index: 1;
+      width: 150px;
+      height: 310px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .shade {
+      width: 140px;
+      height: 100px;
+      border-radius: 48% 48% 18% 18%;
+      background: linear-gradient(90deg,
+        #d89a54, #ffe0a0, #ffcf7c);
+      clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+      box-shadow: 0 0 50px #ffc16b99;
+    }
+
+    .bulb {
+      width: 35px;
+      height: 27px;
+      margin-top: -1px;
+      background: #ffd38b;
+      border-radius: 0 0 50% 50%;
+      box-shadow: 0 0 40px #ffba5c;
+    }
+
+    .stem {
+      width: 8px;
+      height: 205px;
+      background: linear-gradient(90deg, #171719, #77716a, #171719);
+    }
+
+    .base {
+      width: 100px;
+      height: 19px;
+      margin-top: -2px;
+      border-radius: 50%;
+      background: linear-gradient(#61574c, #151515);
+      box-shadow: 0 5px 12px #0008;
+    }
+
+    .brand {
+      position: absolute;
+      top: 28px;
+      left: 30px;
+      letter-spacing: 4px;
+      font-size: 11px;
+      color: #d9a56b;
+    }
+
+    .tagline {
+      position: absolute;
+      bottom: 28px;
+      color: #d0ad8d;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    .panel {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      padding: 48px 38px;
+      background: #171314;
+    }
+
+    .eyebrow {
+      color: #e7a05a;
+      font-size: 10px;
+      letter-spacing: 3px;
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-weight: normal;
+      font-size: 35px;
+      margin: 16px 0 6px;
+    }
+
+    .subtitle {
+      color: #b9a9a0;
+      font-family: Georgia, serif;
+      font-style: italic;
+      margin: 0 0 32px;
+    }
+
+    label {
+      display: block;
+      color: #c9bcb4;
+      font-size: 11px;
+      margin: 18px 0 9px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      color: white;
+      background: #292326;
+      border: 1px solid #403437;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    input:focus { border-color: #e9a25e; }
+
+    .options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 18px 0 24px;
+      color: #c9bcb4;
+      font-size: 11px;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+    }
+
+    .options input { width: auto; accent-color: #efa65c; }
+
+    a { color: #e9ad71; text-decoration: none; }
+
+    button {
+      width: 100%;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      background: linear-gradient(100deg, #ffce8c, #e9943e);
+      color: #24170e;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform .2s, filter .2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    #message {
+      min-height: 18px;
+      margin-top: 14px;
+      color: #ffd08c;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .footer {
+      color: #8e8079;
+      text-align: center;
+      font-size: 11px;
+      margin-top: 24px;
+    }
+
+    @keyframes breathe {
+      from { transform: scale(.9); opacity: .08; }
+      to { transform: scale(1.15); opacity: .2; }
+    }
+
+    @media (max-width: 650px) {
+      body { padding: 12px; }
+      .container {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+      }
+      .scene { min-height: 240px; }
+      .lamp { transform: scale(.65); }
+      .brand { top: 18px; left: 18px; }
+      .tagline { bottom: 15px; font-size: 9px; }
+      .panel { padding: 32px 24px; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="scene">
+      <div class="glow"></div>
+      <div class="brand">STUDIO ACCESS</div>
+
+      <div class="lamp" aria-label="Ilustrasi lampu">
+        <div class="shade"></div>
+        <div class="bulb"></div>
+        <div class="stem"></div>
+        <div class="base"></div>
+      </div>
+
+      <div class="tagline">PULL A LITTLE LIGHT INTO YOUR DAY</div>
+    </section>
+
+    <section class="panel">
+      <div class="eyebrow">LAMP LOGIN V3</div>
+      <h1>Welcome back.</h1>
+      <p class="subtitle">Pull up a chair.</p>
+
+      <form id="loginForm">
+        <label for="email">EMAIL ADDRESS</label>
+        <input id="email" type="email"
+          placeholder="you@example.com" required>
+
+        <label for="password">PASSWORD</label>
+        <input id="password" type="password"
+          placeholder="Enter your password" required>
+
+        <div class="options">
+          <label>
+            <input type="checkbox" id="remember">
+            Keep me signed in
+          </label>
+          <a href="#" id="forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit">Sign in</button>
+        <div id="message" role="status"></div>
+      </form>
+
+      <div class="footer">
+        No account yet? <a href="#" id="register">Request one</a>
+        <p>Designed for a brighter workspace.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      message.textContent =
+        "Tampilan berhasil! Sistem login belum terhubung.";
+    });
+
+    document.getElementById("forgot").addEventListener("click",
+      function(event) {
+        event.preventDefault();
+        message.textContent =
+          "Fitur reset password belum diaktifkan.";
+      }
+    );
+
+    document.getElementById("register").addEventListener("click",
+      function(event) {
+        event.preventDefault();
+        message.textContent =
+          "Fitur pendaftaran belum diaktifkan.";
+      }
+    );
+  </script>
+</body>
+</html>
