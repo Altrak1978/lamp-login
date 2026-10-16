@@ -217,6 +217,63 @@
       margin-top: 24px;
     }
 
+    
+/* Transisi lampu dan form login */
+.container,
+.panel,
+.scene,
+.shade,
+.bulb,
+.glow {
+  transition: all 0.7s ease;
+}
+
+.lamp {
+  cursor: pointer;
+  user-select: none;
+}
+
+.lamp:focus-visible {
+  outline: 2px solid #ffcf7c;
+  outline-offset: 8px;
+  border-radius: 12px;
+}
+
+/* Efek saat lampu dimatikan */
+body.lights-off .container {
+  grid-template-columns: 1fr 0fr;
+}
+
+body.lights-off .scene {
+  background: #080707;
+}
+
+body.lights-off .glow {
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+body.lights-off .shade {
+  background: linear-gradient(90deg, #302923, #51463a, #302923);
+  box-shadow: none;
+}
+
+body.lights-off .bulb {
+  background: #40372f;
+  box-shadow: none;
+}
+
+body.lights-off .panel {
+  min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transform: translateX(25px);
+  pointer-events: none;
+}
+
     @keyframes breathe {
       from { transform: scale(.9); opacity: .08; }
       to { transform: scale(1.15); opacity: .2; }
@@ -286,31 +343,58 @@
     </section>
   </main>
 
-  <script>
-    const form = document.getElementById("loginForm");
-    const message = document.getElementById("message");
+ 
+<script>
+  const form = document.getElementById("loginForm");
+  const message = document.getElementById("message");
+  const lamp = document.querySelector(".lamp");
 
-    form.addEventListener("submit", function(event) {
+  function toggleLamp() {
+    const isOff = document.body.classList.toggle("lights-off");
+
+    lamp.setAttribute("aria-pressed", String(!isOff));
+    lamp.setAttribute(
+      "aria-label",
+      isOff ? "Lampu mati, klik untuk menyalakan"
+            : "Lampu menyala, klik untuk mematikan"
+    );
+  }
+
+  lamp.setAttribute("role", "button");
+  lamp.setAttribute("tabindex", "0");
+  lamp.setAttribute("aria-pressed", "true");
+  lamp.setAttribute("aria-label", "Lampu menyala");
+
+  lamp.addEventListener("click", toggleLamp);
+
+  lamp.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleLamp();
+    }
+  });
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    message.textContent =
+      "Tampilan berhasil! Sistem login belum terhubung.";
+  });
+
+  document.getElementById("forgot").addEventListener("click",
+    function(event) {
       event.preventDefault();
       message.textContent =
-        "Tampilan berhasil! Sistem login belum terhubung.";
-    });
+        "Fitur reset password belum diaktifkan.";
+    }
+  );
 
-    document.getElementById("forgot").addEventListener("click",
-      function(event) {
-        event.preventDefault();
-        message.textContent =
-          "Fitur reset password belum diaktifkan.";
-      }
-    );
-
-    document.getElementById("register").addEventListener("click",
-      function(event) {
-        event.preventDefault();
-        message.textContent =
-          "Fitur pendaftaran belum diaktifkan.";
-      }
-    );
-  </script>
+  document.getElementById("register").addEventListener("click",
+    function(event) {
+      event.preventDefault();
+      message.textContent =
+        "Fitur pendaftaran belum diaktifkan.";
+    }
+  );
+</script>
 </body>
 </html>
